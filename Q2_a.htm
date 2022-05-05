@@ -1,0 +1,79 @@
+<html>
+<title> Getting Info </title>
+
+<head> <!--This URL specifies BG pic-->
+<style>
+body {
+  background-image: url('https://media.istockphoto.com/vectors/green-polygonal-background-vector-illustration-abstract-texture-vector-id884265910?k=20&m=884265910&s=612x612&w=0&h=5u1I26JwWFsS8XrlV-2ovPHJ4ILC7QYDAj48o2P20XI=');
+}
+</style>
+</head>
+
+<body>
+  <?php
+  // define variables and set to empty values
+  $name = $city = $age = $ph = "";
+  $ok=1;
+  
+  
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = test_input($_POST["name"]);
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {echo "Only letters and white space allowed for name";$ok=0;} 
+    $city = test_input($_POST["city"]);
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {echo "Only letters and white space allowed for city";$ok=0;} 
+    $age = test_input($_POST["age"]);
+    if(!isnumeric($age)){echo "Only numbers are allowed for age";$ok=0;}
+    $ph = test_input($_POST["ph"]);
+    if(!isnumeric($ph)){echo " Only numbers are allowed for phone";$ok=0;}
+    
+    if($ok)
+    {
+      $servername = "localhost";
+      $username = "root";
+      $password = "AXAdb1700Dilbeek";
+      $dbname = "StoreDB";
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($conn->connect_error) {die("Connection failed: " . $conn->connect_error);}
+
+      $sql = "INSERT INTO MyGuests (name, city, age, phno) VALUES ($name, $city, $age, $ph)";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Data Submitted Succesfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+    }
+  }
+  
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+  ?>
+<br><h1 align="center" style="font-size:60px;color:white" >Hola Hypertext Assassins! </h1> <!--Title-->
+<br>
+<br>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
+ <label style="font-size:30px;font-family:verdana; left: 500px; position: absolute" for="Name"> <b> Name        : </label>
+ <input type="text" style="font-size:20px; left: 700px; position: absolute" id="Name" name="name" placeholder="Enter Name"><br> 
+ <br>
+ <label style="font-size:30px;font-family:verdana; left: 500px; position: absolute"  for="City"> <b> City         : </label>
+ <input type="text" style="font-size:20px; left: 700px; position: absolute" id="City" name="city" placeholder="Enter City"><br> 
+ <br>
+ <label style="font-size:30px;font-family:verdana; left: 500px; position: absolute" for="Age"> <b> Age      : </label>
+ <input type="number" style="font-size:20px; left: 700px; position: absolute" id="Age" name="age" placeholder="Enter Age"><br> 
+ <br>
+ <label style="font-size:30px;font-family:verdana; left: 500px; position: absolute " for="Ph"> <b> Phone No. : </label>
+ <input type="number" style="font-size:20px; left: 700px; position: absolute" id="Ph" name="ph" placeholder="Enter Ph No."><br><br><br><br><br><br>
+ <input style="font-size:20px; left: 650px; position: absolute" type="submit" name="submit">
+
+
+
+</form>
+</body>
+</html>
