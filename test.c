@@ -1,5 +1,5 @@
 #include<stdio.h>
 int main()
 {
-    printf("May the odds be ever in your favor\n");
+    printf("Let the 74th Hunger Games Begin\n");
 }
